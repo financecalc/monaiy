@@ -1,0 +1,45 @@
+# Ziele
+- Public APIs klein/stabil, jede Änderung mit Tests + Docs.
+- Tokens sind Single Source of Truth, keine Hardcoded-Farben.
+- PWA ohne Backend. Keine Server-Abhängigkeiten einführen.
+- Offline-first. Jede User Journey muss offline funktionieren.
+
+# Grenzen
+- Ändere nichts unter `infra/` ohne Issue/PR.
+- Kein Direktzugriff auf Secrets; nutze `.env` + Vault.
+- Keine Server Actions, kein API-Client zu Cloud-Services ohne explizites Epic.
+- Keine globalen State-Container für Datenobjekte. Zugriff über Repositories.
+- Nichts unter `public/manifest.json` und `public/sw.js` brechen ohne Update-Flow.
+
+## UI
+- Tailwind + shadcn/ui
+- Jeder Screen hat States: empty, loading, error
+- a11y: Fokus-Reihenfolge, ARIA Labels, Kontrast AA
+
+## Architektur
+- Next.js 15 App Router
+- TS strict, keine `any`
+- IndexedDB via Dexie in `lib/db/`
+- Repositories kapseln alle DB-Zugriffe
+- Zod validiert Input und Import-Dateien
+
+# Stil & Qualität
+- TS strict, kein `any`. Zod für alle API-Antworten im FE.
+- Fehlerformat BE:
+  { "error": { "code": "string", "message": "string", "details": {...} } }
+- Jede UI-Komponente: Stories (default/hover/focus/disabled/loading/empty/error),
+  a11y grün, visuelle Diffs grün.
+
+# Testpflichten
+- Jede Story → 1 Playwright-Case (Happy Path).
+- Kritische Endpunkte: Contract-Tests gegen OpenAPI.
+- PWA Checks: SW registriert, offline nutzbar, Update-Banner
+
+## Performance
+- Initial JS < 180 kB gz
+- Bilder responsiv, lazy
+- Keine blockierenden Webfonts
+
+## Commits und PRs
+- Kein Commit ohne lint, typecheck, test
+- PR verlinkt Story, enthält Screens, a11y und Lighthouse Report
