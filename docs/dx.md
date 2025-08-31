@@ -5,13 +5,15 @@ This document standardizes local tooling and CI gates for the project.
 ## 1) Pre-commit: lint / format / test
 
 ### JavaScript/TypeScript (Next.js)
+
 We use **Husky** + **lint-staged**.
 
 **Install**
+
 ```bash
 npm i -D husky lint-staged prettier eslint typescript vitest @vitest/coverage-v8
 npx husky init
-````
+```
 
 **package.json**
 
@@ -27,13 +29,8 @@ npx husky init
     "build": "next build"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,css}": ["prettier --write"]
   }
 }
 ```
@@ -57,7 +54,7 @@ npm run test:unit
 
 Use `pre-commit` framework with **black**, **ruff**, **mypy**.
 
-**services/fints\_service/.pre-commit-config.yaml**
+**services/fints_service/.pre-commit-config.yaml**
 
 ```yaml
 repos:
@@ -69,12 +66,12 @@ repos:
     rev: v0.6.9
     hooks:
       - id: ruff
-        args: ["--fix"]
+        args: ['--fix']
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.1
     hooks:
       - id: mypy
-        additional_dependencies: ["types-requests"]
+        additional_dependencies: ['types-requests']
 ```
 
 **Setup**
@@ -90,19 +87,19 @@ pre-commit install
 
 **.github/workflows/ci.yml (summary)**
 
-* Node: install, **eslint**, **prettier check**, **typecheck**, **vitest** (unit/components), **build**
-* Python: **ruff**, **black --check**, **mypy**, **pytest** (if added)
-* E2E: **Playwright** on ephemeral Next.js build
-* a11y: **axe**/playwright checks
-* Visual regression: Playwright `toHaveScreenshot()` (PR branches only)
+- Node: install, **eslint**, **prettier check**, **typecheck**, **vitest** (unit/components), **build**
+- Python: **ruff**, **black --check**, **mypy**, **pytest** (if added)
+- E2E: **Playwright** on ephemeral Next.js build
+- a11y: **axe**/playwright checks
+- Visual regression: Playwright `toHaveScreenshot()` (PR branches only)
 
 Key gates:
 
-* ❌ Fail on ESLint warnings (`--max-warnings=0`)
-* ❌ Fail on `format:check` mismatch
-* ❌ Fail on type errors
-* ❌ Fail on unit or E2E test errors
-* ❌ Fail on a11y violations (configured threshold = 0)
+- ❌ Fail on ESLint warnings (`--max-warnings=0`)
+- ❌ Fail on `format:check` mismatch
+- ❌ Fail on type errors
+- ❌ Fail on unit or E2E test errors
+- ❌ Fail on a11y violations (configured threshold = 0)
 
 See CI file below for full content.
 
@@ -110,24 +107,24 @@ See CI file below for full content.
 
 ## 3) Commit / PR conventions
 
-* **Conventional Commits** (feat, fix, chore, docs, refactor, test, perf, ci)
-* PRs must have:
+- **Conventional Commits** (feat, fix, chore, docs, refactor, test, perf, ci)
+- PRs must have:
+  - Summary & scope
+  - Screenshots (UI changes)
+  - Tests (unit/E2E) and a11y notes
+  - i18n impact
+  - Security impact (secrets, tokens)
+  - Performance impact (TTI, interaction latency)
 
-  * Summary & scope
-  * Screenshots (UI changes)
-  * Tests (unit/E2E) and a11y notes
-  * i18n impact
-  * Security impact (secrets, tokens)
-  * Performance impact (TTI, interaction latency)
-* Always update **CHANGELOG.md** via PR with a new entry under **Unreleased**.
+- Always update **CHANGELOG.md** via PR with a new entry under **Unreleased**.
 
 ---
 
 ## 4) Changelog policy
 
-* Format: **Keep a Changelog**, **SemVer**
-* Sections: Added / Changed / Fixed / Removed / Security / Deprecated
-* Release: Move items from **Unreleased** → **\[x.y.z] - YYYY-MM-DD** when tagging
+- Format: **Keep a Changelog**, **SemVer**
+- Sections: Added / Changed / Fixed / Removed / Security / Deprecated
+- Release: Move items from **Unreleased** → **\[x.y.z] - YYYY-MM-DD** when tagging
 
 ````
 
@@ -186,3 +183,4 @@ See CI file below for full content.
 
 ### Notes for Reviewer
 <!-- Anything that helps review faster: risky areas, how to test locally, flags, follow-ups. -->
+````

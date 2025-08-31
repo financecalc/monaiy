@@ -1,10 +1,13 @@
 ## Ziel / Scope
+
 Link: Story / Epic / Figma
 
 ## Akzeptanzkriterien
+
 - [ ] erfüllt (Aufzählung)
 
 ## Checks
+
 - [ ] Lint/Typecheck/Test
 - [ ] Storybook + visuelle Diffs
 - [ ] E2E (Happy + 1 Edge)
@@ -12,4 +15,3 @@ Link: Story / Epic / Figma
 - [ ] Performance-Budget ok
 
 ## Screens/Artefakte
-

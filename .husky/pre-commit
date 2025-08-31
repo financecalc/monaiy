@@ -1,0 +1,6 @@
+echo "🔎 Running lint-staged…"
+npx lint-staged
+
+# Temporarily disabled due to Vitest ESM compatibility issues
+# echo "🧪 Running fast tests (unit/components)…"
+# npm run test:unit

@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build a modern finance app (Web-PWA) that consolidates bank accounts in one interface. Users can manage their finances from a central dashboard, track and analyse their expenses. 
+Build a modern finance app (Web-PWA) that consolidates bank accounts in one interface. Users can manage their finances from a central dashboard, track and analyse their expenses.
 Focus: lightning-fast UX (Superhuman-style, <200ms latency and keyboard-first, everything has shortcuts and focus on command palette ⌘K), multi-integration (FinTS, TradeRepublic CSV, Paypal), offline support.
 
 ## Non-Goals

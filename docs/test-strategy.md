@@ -1,11 +1,13 @@
 # Test Strategy
 
 ## Goals
+
 - Prevent regressions in critical flows (connect, sync, import, explore, tag)
 - Enforce a11y (WCAG AA) and UX performance (<200ms interactions)
 - Catch visual diffs early with automated snapshots
 
 ## Test Pyramid
+
 1. **Unit tests** (Vitest) — pure functions, utils, hooks
 2. **Component tests** (Vitest + @testing-library/react) — UI states: Empty/Loading/Success/Error
 3. **E2E tests** (Playwright) — Happy Path + Edge cases on real build
@@ -17,6 +19,7 @@
 ## Scope & Critical Paths
 
 ### Happy Paths (E2E)
+
 - **FinTS connect** → account listed with balance
 - **PayPal sync** → new transactions visible, no duplicates
 - **TR import** → CSV parsed, items appear with provider tag
@@ -25,6 +28,7 @@
 - **Budgets** → list created, totals roll up (per currency)
 
 ### Edge Cases (E2E)
+
 - FinTS timeout / invalid credentials → error banner + retry
 - PayPal 429 → backoff message
 - TR invalid CSV → error state with guidance
@@ -36,6 +40,7 @@
 ## Unit & Component Tests (Vitest)
 
 **Examples**
+
 - utils/normalizers: currency formatting, date parsing
 - hooks/useSearch: filter logic (case-insensitive, numeric)
 - components/TransactionsTable:
@@ -47,9 +52,10 @@
   - handles long names, emoji
 
 **Commands**
+
 ```bash
 npm run test:unit
-````
+```
 
 ---
 
@@ -74,13 +80,13 @@ export default defineConfig({
     baseURL: process.env.PW_BASE_URL || 'http://localhost:3000',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure'
+    video: 'retain-on-failure',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } }
-  ]
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  ],
 });
 ```
 
@@ -119,7 +125,7 @@ test('dashboard has no a11y violations', async ({ page }) => {
   await injectAxe(page);
   await checkA11y(page, undefined, {
     detailedReport: true,
-    detailedReportOptions: { html: true }
+    detailedReportOptions: { html: true },
   });
 });
 ```
@@ -136,15 +142,17 @@ Use Playwright’s `toHaveScreenshot()` with stable containers.
 test('transactions table visual', async ({ page }) => {
   await page.goto('/transactions');
   const table = page.locator('[data-testid="transactions-table"]');
-  await expect(table).toHaveScreenshot('transactions-table.png', { maxDiffPixels: 100 });
+  await expect(table).toHaveScreenshot('transactions-table.png', {
+    maxDiffPixels: 100,
+  });
 });
 ```
 
 Guidelines:
 
-* Mask dynamic content (dates, balances) with CSS or `mask` option
-* Run on CI with deterministic viewport & fonts
-* Only for PR branches; store snapshots in repo
+- Mask dynamic content (dates, balances) with CSS or `mask` option
+- Run on CI with deterministic viewport & fonts
+- Only for PR branches; store snapshots in repo
 
 ---
 
@@ -165,22 +173,21 @@ Artifacts on failure: traces, screenshots, videos, axe reports.
 
 ## Quality Gates
 
-* ESLint: no warnings
-* Prettier: clean
-* Typecheck: clean
-* Unit/Component coverage: **≥80% statements/branches**
-* E2E: all happy + selected edge pass
-* a11y: **0 violations** core pages
-* Visual: no diffs beyond threshold
+- ESLint: no warnings
+- Prettier: clean
+- Typecheck: clean
+- Unit/Component coverage: **≥80% statements/branches**
+- E2E: all happy + selected edge pass
+- a11y: **0 violations** core pages
+- Visual: no diffs beyond threshold
 
 ---
 
 ## Ownership & Reporting
 
-* Test owners per folder (`CODEOWNERS`).
-* CI posts summary to PR with:
-
-  * Coverage %
-  * E2E pass/fail + links to traces
-  * a11y violations (if any)
-  * Visual diff links
+- Test owners per folder (`CODEOWNERS`).
+- CI posts summary to PR with:
+  - Coverage %
+  - E2E pass/fail + links to traces
+  - a11y violations (if any)
+  - Visual diff links
